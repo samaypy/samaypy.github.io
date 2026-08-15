@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>samay</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{min-height:100vh;}
+  body{
+    min-height:100vh;
+    background:#8ace00;
+    font-family:Arial,Helvetica,sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:60px 24px;
+  }
+
+  .page{
+    width:100%;
+    max-width:520px;
+  }
+
+  .headline{
+    font-family:"Arial Narrow",Arial,sans-serif;
+    font-weight:400;
+    text-transform:lowercase;
+    letter-spacing:-0.5px;
+    font-size:clamp(52px,13vw,88px);
+    color:#111;
+    filter:blur(1px);
+    line-height:0.9;
+    transition: filter 0.4s ease;
+    user-select:none;
+  }
+  .headline:hover, .headline:active{ filter:blur(0px); }
+
+  .links{
+    margin-top:52px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .row{
+    text-decoration:none;
+    font-family:"Arial Narrow",Arial,sans-serif;
+    font-weight:400;
+    text-transform:lowercase;
+    letter-spacing:-0.2px;
+    font-size:clamp(22px,6vw,30px);
+    color:#111;
+    filter:blur(0.8px);
+    transition: filter 0.28s ease, transform 0.15s ease;
+    line-height:1.15;
+  }
+  .row:hover, .row:active, .row:focus{
+    filter:blur(0px);
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .headline, .row{ transition:none; filter:blur(0px); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="page">
+    <div class="headline">samay</div>
+
+    <div class="links">
+      <a class="row" href="https://instagram.com/samay.jpg" target="_blank" rel="noopener">instagram</a>
+      <a class="row" href="https://wa.me/919414848901" target="_blank" rel="noopener">whatsapp</a>
+      <a class="row" href="tel:+917230072629">call</a>
+      <a class="row" href="mailto:samaychandak06@gmail.com">email</a>
+      <a class="row" href="https://linkedin.com/in/samaychandak" target="_blank" rel="noopener">linkedin</a>
+      <a class="row" href="https://in.pinterest.com/wtfsamay/" target="_blank" rel="noopener">pinterest</a>
+      <a class="row" href="https://github.com/samaypy" target="_blank" rel="noopener">github</a>
+      <a class="row" href="https://twitter.com/okaysamay" target="_blank" rel="noopener">twitter</a>
+      <a class="row" href="http://sptfy.in/samay" target="_blank" rel="noopener">spotify</a>
+      <a class="row" href="https://t.me/samayyyy" target="_blank" rel="noopener">telegram</a>
+      <a class="row" href="https://discord.com/users/newuton" target="_blank" rel="noopener">discord</a>
+      <a class="row" href="https://youtube.com/@samay.mp4" target="_blank" rel="noopener">youtube</a>
+    </div>
+  </div>
+
+</body>
+</html>
