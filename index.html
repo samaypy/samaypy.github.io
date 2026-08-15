@@ -35,6 +35,15 @@
     background: var(--fg, #111111);
     color: var(--bg, #8ace00);
   }
+  body::after{
+    content:'';
+    position:fixed; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05;
+    mix-blend-mode:overlay;
+    pointer-events:none;
+    z-index:1;
+  }
   a{
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"><path d="M2 2 L2 8 M2 2 L8 2 M24 2 L24 8 M24 2 L18 2 M2 24 L2 18 M2 24 L8 24 M24 24 L24 18 M24 24 L18 24" stroke="black" stroke-width="2.5" fill="none"/></svg>') 13 13, pointer;
   }
@@ -137,8 +146,42 @@
       <a class="row" href="https://youtube.com/@samay.mp4" target="_blank" rel="noopener">youtube</a>
     </div>
 
-    <div class="counter" id="visitCounter">visitor no. 0</div>
+    <div class="counter" id="visitCounter">visitor no. ···</div>
   </div>
+
+  <script>
+    (function(){
+      var actx = null;
+      function tick(cutoffHz, duration){
+        try{
+          if(!actx){ actx = new (window.AudioContext || window.webkitAudioContext)(); }
+          var bufferSize = Math.max(1, Math.floor(actx.sampleRate * duration));
+          var buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
+          var data = buffer.getChannelData(0);
+          for(var i = 0; i < bufferSize; i++){
+            var env = Math.pow(1 - i / bufferSize, 3);
+            data[i] = (Math.random() * 2 - 1) * env;
+          }
+          var src = actx.createBufferSource();
+          src.buffer = buffer;
+          var filter = actx.createBiquadFilter();
+          filter.type = 'highpass';
+          filter.frequency.value = cutoffHz;
+          var gain = actx.createGain();
+          gain.gain.value = 0.5;
+          src.connect(filter);
+          filter.connect(gain);
+          gain.connect(actx.destination);
+          src.start();
+        }catch(e){}
+      }
+      window.__bratTick = tick;
+
+      document.querySelectorAll('.row').forEach(function(a){
+        a.addEventListener('click', function(){ tick(3500, 0.025); });
+      });
+    })();
+  </script>
 
   <script>
     (function(){
@@ -158,6 +201,7 @@
         metaTheme.setAttribute('content', t.bg);
         row.querySelectorAll('.theme-swatch').forEach(function(b){ b.classList.remove('active'); });
         btn.classList.add('active');
+        if(window.__bratTick){ window.__bratTick(2200, 0.04); }
       }
 
       themes.forEach(function(t, i){
@@ -167,7 +211,12 @@
         btn.setAttribute('aria-label', t.name + ' theme');
         btn.addEventListener('click', function(){ applyTheme(t, btn); });
         row.appendChild(btn);
-        if(i === 0){ applyTheme(t, btn); }
+        if(i === 0){
+          document.body.style.setProperty('--bg', t.bg);
+          document.body.style.setProperty('--fg', t.fg);
+          metaTheme.setAttribute('content', t.bg);
+          btn.classList.add('active');
+        }
       });
     })();
   </script>
