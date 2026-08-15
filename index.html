@@ -56,7 +56,10 @@
     border-bottom:1px solid #b8bec4;
   }
 
-  .rows{ flex:1; }
+  .rows{ flex:1; max-height:270px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  .rows::-webkit-scrollbar{ width:4px; }
+  .rows::-webkit-scrollbar-thumb{ background:#c3c8cc; }
+
   .row{
     display:flex; align-items:center; gap:8px;
     padding:9px 10px;
@@ -70,19 +73,18 @@
   .row .rsub{ font-size:10px; color:#8a8f86; }
   .row .chev{ font-size:13px; color:#9aa0a6; }
 
-  .row.selected, .row:hover, .row:active{
+  .row:hover, .row:active{
     background:linear-gradient(180deg,#3f7fe0,#1c4fc4);
     color:#fff;
   }
-  .row.selected .rsub, .row:hover .rsub, .row:active .rsub{ color:#dce6ff; }
-  .row.selected .chev, .row:hover .chev, .row:active .chev{ color:#fff; }
+  .row:hover .rsub, .row:active .rsub{ color:#dce6ff; }
+  .row:hover .chev, .row:active .chev{ color:#fff; }
 
   .footer-text{
     text-align:center; padding:8px 0; font-size:10px; color:#8a8f86;
     background:#eef1ef;
   }
 
-  /* click wheel */
   .wheel-wrap{
     margin-top:26px;
     display:flex; justify-content:center;
@@ -128,7 +130,7 @@
         <div class="rows">
           <a class="row" href="https://instagram.com/samay.jpg" target="_blank" rel="noopener">
             <span class="rlabel">Instagram</span>
-            <span class="rsub">Stalk</span>
+            <span class="rsub">@samay.jpg</span>
             <span class="chev">›</span>
           </a>
           <a class="row" href="https://wa.me/919414848901" target="_blank" rel="noopener">
@@ -151,9 +153,39 @@
             <span class="rsub">Compose</span>
             <span class="chev">›</span>
           </a>
+          <a class="row" href="https://t.me/samayyyy" target="_blank" rel="noopener">
+            <span class="rlabel">Telegram</span>
+            <span class="rsub">@samayyyy</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="https://twitter.com/okaysamay" target="_blank" rel="noopener">
+            <span class="rlabel">Twitter / X</span>
+            <span class="rsub">@okaysamay</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="https://discord.com/users/newuton" target="_blank" rel="noopener">
+            <span class="rlabel">Discord</span>
+            <span class="rsub">newuton</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="https://snapchat.com/add/samay.jpg" target="_blank" rel="noopener">
+            <span class="rlabel">Snapchat</span>
+            <span class="rsub">samay.jpg</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="https://youtube.com/@samay.mp4" target="_blank" rel="noopener">
+            <span class="rlabel">YouTube</span>
+            <span class="rsub">samay.mp4</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="https://github.com/samaypy" target="_blank" rel="noopener">
+            <span class="rlabel">GitHub</span>
+            <span class="rsub">samaypy</span>
+            <span class="chev">›</span>
+          </a>
         </div>
 
-        <div class="footer-text">Samay ✧ 5 of 5</div>
+        <div class="footer-text">Samay ✧ 11 of 11</div>
       </div>
     </div>
 
