@@ -4,17 +4,35 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>contact me</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%238ace00'/%3E%3C/svg%3E"/>
+<meta name="theme-color" id="themeColorMeta" content="#8ace00"/>
+
+<meta property="og:title" content="samay — contact me"/>
+<meta property="og:description" content="reach me here"/>
+<meta property="og:image" content="og-image.png"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="samay — contact me"/>
+<meta name="twitter:image" content="og-image.png"/>
+
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   html,body{min-height:100vh;}
   body{
     min-height:100vh;
-    background:#8ace00;
+    background: var(--bg, #8ace00);
+    color: var(--fg, #111111);
     font-family:Arial,Helvetica,sans-serif;
     display:flex;
     align-items:center;
     justify-content:center;
     padding:60px 24px;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="7" fill="black" stroke="white" stroke-width="2"/></svg>') 10 10, auto;
+    transition: background-color 0.7s ease, color 0.7s ease;
+  }
+  a{
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"><circle cx="13" cy="13" r="10" fill="black" stroke="white" stroke-width="2"/></svg>') 13 13, pointer;
   }
 
   .page{
@@ -28,10 +46,11 @@
     text-transform:lowercase;
     letter-spacing:-0.5px;
     font-size:clamp(52px,13vw,88px);
-    color:#111;
+    color: var(--fg, #111111);
     filter:blur(1.3px);
     line-height:0.9;
     user-select:none;
+    transition: color 0.7s ease;
   }
 
   .links{
@@ -48,9 +67,10 @@
     text-transform:lowercase;
     letter-spacing:-0.2px;
     font-size:clamp(22px,6vw,30px);
-    color:#111;
+    color: var(--fg, #111111);
     filter:blur(1.1px);
     line-height:1.15;
+    transition: color 0.7s ease;
   }
 
   .counter{
@@ -59,13 +79,32 @@
     font-weight:400;
     text-transform:lowercase;
     font-size:17px;
-    color:#111;
+    color: var(--fg, #111111);
     filter:blur(1px);
     letter-spacing:0.2px;
+    transition: color 0.7s ease;
   }
+
+  .theme-toggle{
+    position:fixed;
+    bottom:18px;
+    right:18px;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background: var(--fg, #111111);
+    opacity:0.35;
+    cursor:pointer;
+    transition: background-color 0.7s ease, opacity 0.2s ease;
+    border:none;
+    padding:0;
+  }
+  .theme-toggle:hover{ opacity:0.7; }
 </style>
 </head>
 <body>
+
+  <button class="theme-toggle" id="themeToggle" aria-label="change color theme"></button>
 
   <div class="page">
     <div class="headline">samay</div>
@@ -87,6 +126,34 @@
 
     <div class="counter" id="visitCounter">visitor no. 0</div>
   </div>
+
+  <script>
+    (function(){
+      var themes = [
+        { bg:'#ffffff', fg:'#111111' },
+        { bg:'#0a009c', fg:'#111111' },
+        { bg:'#851812', fg:'#111111' },
+        { bg:'#8ace00', fg:'#111111' }, // default
+        { bg:'#111111', fg:'#8ace00' }
+      ];
+      var idx = 3; // start on default green
+      var metaTheme = document.getElementById('themeColorMeta');
+
+      function applyTheme(i){
+        var t = themes[i];
+        document.body.style.setProperty('--bg', t.bg);
+        document.body.style.setProperty('--fg', t.fg);
+        metaTheme.setAttribute('content', t.bg);
+      }
+
+      applyTheme(idx);
+
+      document.getElementById('themeToggle').addEventListener('click', function(){
+        idx = (idx + 1) % themes.length;
+        applyTheme(idx);
+      });
+    })();
+  </script>
 
   <script>
     (function(){
