@@ -12,6 +12,7 @@
     background: radial-gradient(circle at 50% 20%, #3a3f4a, #14161c 75%);
     display:flex; align-items:center; justify-content:center;
     padding:36px 16px;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="7" fill="black" stroke="white" stroke-width="2"/></svg>') 10 10, auto;
   }
 
   .ipod{
@@ -68,6 +69,7 @@
     font-size:13px; font-weight:500;
     border-bottom:1px solid #e2e5e0;
     position:relative;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"><circle cx="13" cy="13" r="10" fill="black" stroke="white" stroke-width="2"/></svg>') 13 13, pointer;
   }
   .row .rlabel{ flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .row .rsub{ font-size:10px; color:#8a8f86; }
@@ -139,13 +141,8 @@
             <span class="chev">›</span>
           </a>
           <a class="row" href="tel:+917230072629">
-            <span class="rlabel">Phone</span>
-            <span class="rsub">Call</span>
-            <span class="chev">›</span>
-          </a>
-          <a class="row" href="https://linkedin.com/in/samaychandak" target="_blank" rel="noopener">
-            <span class="rlabel">LinkedIn</span>
-            <span class="rsub">Profile</span>
+            <span class="rlabel">Call</span>
+            <span class="rsub">+91 72300 72629</span>
             <span class="chev">›</span>
           </a>
           <a class="row" href="mailto:samaychandak06@gmail.com">
@@ -153,29 +150,14 @@
             <span class="rsub">Compose</span>
             <span class="chev">›</span>
           </a>
-          <a class="row" href="https://t.me/samayyyy" target="_blank" rel="noopener">
-            <span class="rlabel">Telegram</span>
-            <span class="rsub">@samayyyy</span>
+          <a class="row" href="https://linkedin.com/in/samaychandak" target="_blank" rel="noopener">
+            <span class="rlabel">LinkedIn</span>
+            <span class="rsub">Profile</span>
             <span class="chev">›</span>
           </a>
-          <a class="row" href="https://twitter.com/okaysamay" target="_blank" rel="noopener">
-            <span class="rlabel">Twitter / X</span>
-            <span class="rsub">@okaysamay</span>
-            <span class="chev">›</span>
-          </a>
-          <a class="row" href="https://discord.com/users/newuton" target="_blank" rel="noopener">
-            <span class="rlabel">Discord</span>
-            <span class="rsub">newuton</span>
-            <span class="chev">›</span>
-          </a>
-          <a class="row" href="https://snapchat.com/add/samay.jpg" target="_blank" rel="noopener">
-            <span class="rlabel">Snapchat</span>
-            <span class="rsub">samay.jpg</span>
-            <span class="chev">›</span>
-          </a>
-          <a class="row" href="https://youtube.com/@samay.mp4" target="_blank" rel="noopener">
-            <span class="rlabel">YouTube</span>
-            <span class="rsub">samay.mp4</span>
+          <a class="row" href="https://in.pinterest.com/wtfsamay/" target="_blank" rel="noopener">
+            <span class="rlabel">Pinterest</span>
+            <span class="rsub">wtfsamay</span>
             <span class="chev">›</span>
           </a>
           <a class="row" href="https://github.com/samaypy" target="_blank" rel="noopener">
@@ -183,9 +165,34 @@
             <span class="rsub">samaypy</span>
             <span class="chev">›</span>
           </a>
+          <a class="row" href="https://twitter.com/okaysamay" target="_blank" rel="noopener">
+            <span class="rlabel">Twitter / X</span>
+            <span class="rsub">@okaysamay</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="http://sptfy.in/samay" target="_blank" rel="noopener">
+            <span class="rlabel">Spotify</span>
+            <span class="rsub">now playing</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="https://t.me/samayyyy" target="_blank" rel="noopener">
+            <span class="rlabel">Telegram</span>
+            <span class="rsub">@samayyyy</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="https://discord.com/users/newuton" target="_blank" rel="noopener">
+            <span class="rlabel">Discord</span>
+            <span class="rsub">newuton</span>
+            <span class="chev">›</span>
+          </a>
+          <a class="row" href="https://youtube.com/@samay.mp4" target="_blank" rel="noopener">
+            <span class="rlabel">YouTube</span>
+            <span class="rsub">samay.mp4</span>
+            <span class="chev">›</span>
+          </a>
         </div>
 
-        <div class="footer-text">Samay ✧ 11 of 11</div>
+        <div class="footer-text">Samay ✧ 12 of 12</div>
       </div>
     </div>
 
@@ -199,6 +206,39 @@
       </div>
     </div>
   </div>
+
+  <script>
+    (function(){
+      var actx = null;
+      function tick(cutoffHz, duration){
+        try{
+          if(!actx){ actx = new (window.AudioContext || window.webkitAudioContext)(); }
+          var bufferSize = Math.max(1, Math.floor(actx.sampleRate * duration));
+          var buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
+          var data = buffer.getChannelData(0);
+          for(var i = 0; i < bufferSize; i++){
+            var env = Math.pow(1 - i / bufferSize, 3);
+            data[i] = (Math.random() * 2 - 1) * env;
+          }
+          var src = actx.createBufferSource();
+          src.buffer = buffer;
+          var filter = actx.createBiquadFilter();
+          filter.type = 'highpass';
+          filter.frequency.value = cutoffHz;
+          var gain = actx.createGain();
+          gain.gain.value = 0.5;
+          src.connect(filter);
+          filter.connect(gain);
+          gain.connect(actx.destination);
+          src.start();
+        }catch(e){}
+      }
+
+      document.querySelectorAll('.row').forEach(function(a){
+        a.addEventListener('click', function(){ tick(3500, 0.025); });
+      });
+    })();
+  </script>
 
 </body>
 </html>
