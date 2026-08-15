@@ -29,12 +29,10 @@
     letter-spacing:-0.5px;
     font-size:clamp(52px,13vw,88px);
     color:#111;
-    filter:blur(1px);
+    filter:blur(1.3px);
     line-height:0.9;
-    transition: filter 0.4s ease;
     user-select:none;
   }
-  .headline:hover, .headline:active{ filter:blur(0px); }
 
   .links{
     margin-top:52px;
@@ -51,17 +49,19 @@
     letter-spacing:-0.2px;
     font-size:clamp(22px,6vw,30px);
     color:#111;
-    filter:blur(0.8px);
-    transition: filter 0.28s ease, transform 0.15s ease;
+    filter:blur(1.1px);
     line-height:1.15;
   }
-  .row:hover, .row:active, .row:focus{
-    filter:blur(0px);
-    transform: translateX(4px);
-  }
 
-  @media (prefers-reduced-motion: reduce){
-    .headline, .row{ transition:none; filter:blur(0px); }
+  .counter{
+    margin-top:44px;
+    font-family:"Arial Narrow",Arial,sans-serif;
+    font-weight:400;
+    text-transform:lowercase;
+    font-size:17px;
+    color:#111;
+    filter:blur(1px);
+    letter-spacing:0.2px;
   }
 </style>
 </head>
@@ -84,7 +84,26 @@
       <a class="row" href="https://discord.com/users/newuton" target="_blank" rel="noopener">discord</a>
       <a class="row" href="https://youtube.com/@samay.mp4" target="_blank" rel="noopener">youtube</a>
     </div>
+
+    <div class="counter" id="visitCounter">visitor no. 0</div>
   </div>
+
+  <script>
+    (function(){
+      var el = document.getElementById('visitCounter');
+      var namespace = 'samay-contact-links';
+      var key = 'visits';
+      fetch('https://api.countapi.xyz/hit/' + namespace + '/' + key)
+        .then(function(res){ return res.json(); })
+        .then(function(data){
+          var pad = String(data.value).padStart(4, '0');
+          el.textContent = 'visitor no. ' + pad;
+        })
+        .catch(function(){
+          el.textContent = 'visitor no. ----';
+        });
+    })();
+  </script>
 
 </body>
 </html>
