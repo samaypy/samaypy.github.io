@@ -102,6 +102,18 @@
     transition: color 0.7s ease;
   }
 
+  .clock{
+    margin-top:10px;
+    font-family:"Arial Narrow",Arial,sans-serif;
+    font-weight:400;
+    text-transform:lowercase;
+    font-size:17px;
+    color: var(--fg, #111111);
+    filter:blur(1px);
+    letter-spacing:0.2px;
+    transition: color 0.7s ease;
+  }
+
   .theme-row{
     position:fixed;
     bottom:18px;
@@ -147,7 +159,13 @@
     </div>
 
     <div class="counter" id="visitCounter">visitor no. ···</div>
+    <div class="clock" id="liveClock">currently it's --:--:--</div>
+    <div class="clock" id="lastUpdated">last updated ···</div>
   </div>
+
+  <script>
+    document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  </script>
 
   <script>
     (function(){
@@ -192,49 +210,128 @@
         { name:'red',   bg:'#851812', fg:'#ffffff' },
         { name:'night', bg:'#111111', fg:'#8ace00' }
       ];
+      var storageKey = 'samay-brat-theme';
       var metaTheme = document.getElementById('themeColorMeta');
       var row = document.getElementById('themeRow');
 
-      function applyTheme(t, btn){
+      function applyTheme(t, btn, playSound){
         document.body.style.setProperty('--bg', t.bg);
         document.body.style.setProperty('--fg', t.fg);
         metaTheme.setAttribute('content', t.bg);
         row.querySelectorAll('.theme-swatch').forEach(function(b){ b.classList.remove('active'); });
         btn.classList.add('active');
-        if(window.__bratTick){ window.__bratTick(2200, 0.04); }
+        try{ localStorage.setItem(storageKey, t.name); }catch(e){}
+        if(playSound && window.__bratTick){ window.__bratTick(2200, 0.04); }
       }
 
+      var saved = null;
+      try{ saved = localStorage.getItem(storageKey); }catch(e){}
+
+      var buttons = [];
       themes.forEach(function(t, i){
         var btn = document.createElement('button');
         btn.className = 'theme-swatch';
         btn.style.background = t.bg;
         btn.setAttribute('aria-label', t.name + ' theme');
-        btn.addEventListener('click', function(){ applyTheme(t, btn); });
+        btn.addEventListener('click', function(){ applyTheme(t, btn, true); });
         row.appendChild(btn);
-        if(i === 0){
-          document.body.style.setProperty('--bg', t.bg);
-          document.body.style.setProperty('--fg', t.fg);
-          metaTheme.setAttribute('content', t.bg);
-          btn.classList.add('active');
-        }
+        buttons.push(btn);
       });
+
+      var startIndex = 0;
+      if(saved){
+        var found = themes.findIndex(function(t){ return t.name === saved; });
+        if(found !== -1){ startIndex = found; }
+      } else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        startIndex = themes.findIndex(function(t){ return t.name === 'night'; });
+      }
+      applyTheme(themes[startIndex], buttons[startIndex], false);
+    })();
+  </script>
+
+  <!-- GoatCounter tracking -->
+  <script data-goatcounter="https://samay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+  <script>
+    (function(){
+      var el = document.getElementById('visitCounter');
+      var GOATCOUNTER_CODE = 'samay';
+
+      function pad4(n){ return String(n).padStart(4, '0'); }
+
+      // total pageloads (every visit counts, via CountAPI)
+      var totalPromise = fetch('https://countapi.mileshilliard.com/api/v1/hit/samay-contact-links-2026-total')
+        .then(function(r){ return r.json(); });
+
+      // real server-side unique visitor count, via GoatCounter's public counter endpoint
+      var path = encodeURIComponent(window.location.pathname || '/');
+      var uniquePromise = fetch('https://' + GOATCOUNTER_CODE + '.goatcounter.com/counter/' + path + '.json')
+        .then(function(r){ return r.json(); });
+
+      Promise.all([totalPromise, uniquePromise])
+        .then(function(results){
+          var totalVal = results[0].value !== undefined ? results[0].value : results[0].count;
+          var uniqueVal = parseInt(String(results[1].count).replace(/,/g, ''), 10);
+          el.textContent = 'visitor no. ' + pad4(totalVal) + ' · ' + pad4(uniqueVal) + ' unique';
+        })
+        .catch(function(){
+          el.textContent = 'visitor no. ----';
+        });
     })();
   </script>
 
   <script>
     (function(){
-      var el = document.getElementById('visitCounter');
-      var key = 'samay-contact-links-2026';
-      fetch('https://countapi.mileshilliard.com/api/v1/hit/' + key)
-        .then(function(res){ return res.json(); })
-        .then(function(data){
-          var val = data.value !== undefined ? data.value : data.count;
-          var pad = String(val).padStart(4, '0');
-          el.textContent = 'visitor no. ' + pad;
-        })
-        .catch(function(){
-          el.textContent = 'visitor no. ----';
-        });
+      var el = document.getElementById('liveClock');
+      function pad(n){ return n < 10 ? '0' + n : '' + n; }
+      function partOfDay(h){
+        if(h < 5) return 'dead of night';
+        if(h < 7) return 'dawn';
+        if(h < 12) return 'forenoon';
+        if(h < 17) return 'midday';
+        if(h < 20) return 'dusk';
+        return 'afterdark';
+      }
+      function update(){
+        var d = new Date();
+        var h = d.getHours();
+        var timeStr = pad(h) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+        el.textContent = "currently it's " + timeStr + ', ' + partOfDay(h);
+      }
+      update();
+      setInterval(update, 1000);
+    })();
+  </script>
+
+  <script>
+    (function(){
+      // change this date to today whenever you actually update the page
+      var LAST_UPDATED = '2026-08-16';
+
+      var el = document.getElementById('lastUpdated');
+      var updated = new Date(LAST_UPDATED + 'T00:00:00');
+      var now = new Date();
+      var startOfUpdated = new Date(updated.getFullYear(), updated.getMonth(), updated.getDate());
+      var startOfNow = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var dayMs = 24 * 60 * 60 * 1000;
+      var days = Math.round((startOfNow - startOfUpdated) / dayMs);
+
+      var label;
+      if(days <= 0){ label = 'today'; }
+      else if(days === 1){ label = 'yesterday'; }
+      else if(days === 2){ label = 'day before yesterday'; }
+      else if(days < 7){ label = days + ' days ago'; }
+      else if(days < 14){ label = '1 week ago'; }
+      else if(days < 21){ label = '2 weeks ago'; }
+      else if(days < 28){ label = '3 weeks ago'; }
+      else if(days < 60){ label = '1 month ago'; }
+      else if(days < 365){ label = Math.round(days / 30) + ' months ago'; }
+      else {
+        var years = Math.round(days / 365);
+        label = years + (years === 1 ? ' year ago' : ' years ago');
+      }
+
+      el.textContent = 'last updated ' + label;
     })();
   </script>
 
