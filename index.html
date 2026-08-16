@@ -260,45 +260,23 @@
     })();
   </script>
 
-  <!-- GoatCounter tracking -->
-  <script data-goatcounter="https://samay.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-
   <script>
     (function(){
       var el = document.getElementById('visitCounter');
       if(!el) return;
-      var GOATCOUNTER_CODE = 'samay';
 
       function pad4(n){ return String(n).padStart(4, '0'); }
 
-      var totalText = '----';
-      var uniqueText = '----';
-
-      function render(){
-        el.textContent = 'visitor no. ' + totalText + ' · ' + uniqueText + ' unique';
-      }
-      render();
-
-      // total pageloads (every visit counts, via CountAPI)
       fetch('https://countapi.mileshilliard.com/api/v1/hit/samay-contact-links-2026-total')
         .then(function(r){ return r.json(); })
         .then(function(data){
           var totalVal = data.value !== undefined ? data.value : data.count;
-          totalText = pad4(totalVal);
-          render();
+          el.textContent = 'visitor no. ' + pad4(totalVal);
         })
-        .catch(function(err){ console.warn('total counter failed:', err); });
-
-      // real server-side unique visitor count, via GoatCounter's public counter endpoint
-      var path = encodeURIComponent(window.location.pathname || '/');
-      fetch('https://' + GOATCOUNTER_CODE + '.goatcounter.com/counter/' + path + '.json')
-        .then(function(r){ return r.json(); })
-        .then(function(data){
-          var uniqueVal = parseInt(String(data.count).replace(/,/g, ''), 10);
-          uniqueText = pad4(uniqueVal);
-          render();
-        })
-        .catch(function(err){ console.warn('unique counter failed (check GoatCounter public-counter setting):', err); });
+        .catch(function(err){
+          console.warn('visitor counter failed:', err);
+          el.textContent = 'visitor no. ----';
+        });
     })();
   </script>
 
